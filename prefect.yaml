@@ -11,7 +11,7 @@ prefect-version: 3.0.0
 # Replace the repository URL below with your own fork if it differs.
 pull:
   - prefect.deployments.steps.git_clone:
-      repository: https://github.com/Charan770/API-Assignment-1-Group-76.git
+      repository: https://github.com/sandeepnarayana5-glitch/API-Assignment-1-Group-76.git
       branch: main
 
 deployments:
