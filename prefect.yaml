@@ -1,0 +1,48 @@
+# Prefect deployment configuration
+# ---------------------------------
+# Defines how Prefect Cloud fetches this project and how often it runs the flow.
+# The managed work pool means Prefect supplies the compute - no worker process,
+# no EC2 instance and no cloud provider account are required.
+
+name: house-price-dataops
+prefect-version: 3.0.0
+
+# Where Prefect gets the code from on every run.
+# Replace the repository URL below with your own fork if it differs.
+pull:
+  - prefect.deployments.steps.git_clone:
+      repository: https://github.com/Charan770/API-Assignment-1-Group-76.git
+      branch: main
+
+deployments:
+  - name: house-price-2min
+    version: "1.0.0"
+    description: >
+      Ingests the Kaggle house sales dataset, cleans and normalises it, runs
+      exploratory analysis with four encoding techniques, then trains and
+      compares a linear baseline against a random forest. Runs every 2 minutes.
+    tags:
+      - dataops
+      - group-76
+      - aimlzg549
+
+    entrypoint: prefect_flow.py:house_price_pipeline
+
+    work_pool:
+      name: managed-pool
+      job_variables:
+        pip_packages:
+          - pandas>=2.2.0
+          - numpy>=1.26.0
+          - scikit-learn>=1.4.0
+          - scipy>=1.12.0
+          - matplotlib>=3.8.0
+          - joblib>=1.3.2
+          - pydantic-settings>=2.2.0
+          - python-dotenv>=1.0.1
+
+    # Assignment requirement 1.5: run the workflow every 2 minutes.
+    schedules:
+      - interval: 120
+        timezone: Asia/Kolkata
+        active: true

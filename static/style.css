@@ -1,0 +1,515 @@
+/* ==========================================================================
+   House Price Prediction - DataOps Operations Register
+   --------------------------------------------------------------------------
+   Design intent: this screen exists to prove a scheduled job ran on time and
+   to show what each run did. It is a register, not a marketing page, so the
+   layout borrows from printed operations logs: warm paper, ruled rows, and
+   machine data set in a monospaced face. Shadows and gradients are avoided
+   entirely; separation comes from rules and background tone.
+   The single bold element is the cadence clock - the 2-minute schedule is the
+   whole point of the system, so it carries the largest type on the page.
+   ========================================================================== */
+
+:root {
+  /* Surfaces - warm paper stock rather than pure white */
+  --paper:          #faf9f6;
+  --surface:        #ffffff;
+  --surface-sunken: #f3f1ec;
+
+  /* Ink - a slate blue-grey, never a tinted black */
+  --ink:            #1c2128;
+  --ink-secondary:  #4e5764;
+  --ink-muted:      #7c8695;
+
+  /* Rules */
+  --rule:           #e2ded5;
+  --rule-strong:    #cec9bd;
+
+  /* Accent - municipal records blue */
+  --primary:        #1a5e8a;
+  --primary-wash:   #e8f1f7;
+
+  /* States */
+  --positive:       #2d6a4f;
+  --positive-wash:  #e6f0ea;
+  --pending:        #8a5a1a;
+  --pending-wash:   #f7f0e4;
+  --negative:       #9a3412;
+  --negative-wash:  #f9eae5;
+
+  /* Aliases kept for inline styles already present in index.html */
+  --text-secondary: var(--ink-secondary);
+  --text-muted:     var(--ink-muted);
+
+  --measure: 1320px;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  font-family: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  font-size: 15px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  padding: 0 0 72px;
+}
+
+.container {
+  max-width: var(--measure);
+  margin: 0 auto;
+  padding: 0 28px;
+}
+
+/* --------------------------------------------------------------------------
+   Masthead
+   -------------------------------------------------------------------------- */
+
+header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 32px;
+  flex-wrap: wrap;
+  padding: 34px 0 20px;
+  border-bottom: 2px solid var(--ink);
+}
+
+.logo-section {
+  display: flex;
+  align-items: flex-start;
+  gap: 18px;
+}
+
+.badge-cloud {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--primary);
+  background: var(--primary-wash);
+  border: 1px solid #c5dcea;
+  padding: 5px 10px;
+  border-radius: 2px;
+  white-space: nowrap;
+  margin-top: 6px;
+}
+
+header h1 {
+  font-size: 27px;
+  font-weight: 600;
+  letter-spacing: -0.015em;
+  line-height: 1.2;
+}
+
+header p {
+  font-size: 14px;
+  color: var(--ink-secondary);
+  margin-top: 4px;
+}
+
+.header-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: inherit;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 9px 16px;
+  border-radius: 3px;
+  border: 1px solid transparent;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.12s ease, border-color 0.12s ease;
+}
+
+.btn-primary { background: var(--primary); color: #fff; }
+.btn-primary:hover { background: #14496b; }
+
+.btn-secondary {
+  background: var(--surface);
+  color: var(--ink);
+  border-color: var(--rule-strong);
+}
+.btn-secondary:hover { background: var(--surface-sunken); }
+
+.btn:focus-visible,
+a:focus-visible,
+button:focus-visible,
+input:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
+/* --------------------------------------------------------------------------
+   Status strip - the cadence clock is the hero of this page
+   -------------------------------------------------------------------------- */
+
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  border-bottom: 1px solid var(--rule-strong);
+  background: var(--surface);
+  margin-bottom: 34px;
+}
+
+.metric-card {
+  padding: 20px 22px 22px;
+  border-right: 1px solid var(--rule);
+  display: flex;
+  flex-direction: column;
+}
+.metric-card:last-child { border-right: none; }
+
+/* The countdown occupies double width and carries the display type */
+.metric-card:nth-child(2) {
+  grid-column: span 2;
+  background: var(--surface-sunken);
+  border-left: 1px solid var(--rule);
+}
+
+.metric-header {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-secondary);
+  margin-bottom: 10px;
+}
+
+.status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.dot-green { background: var(--positive); }
+.dot-blue  { background: var(--primary); }
+.dot-red   { background: var(--negative); }
+
+.metric-value {
+  font-size: 30px;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  color: var(--ink);
+}
+
+.metric-card:nth-child(2) .metric-value {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 62px;
+  font-weight: 500;
+  letter-spacing: -0.03em;
+  color: var(--primary);
+  font-variant-numeric: tabular-nums;
+}
+
+.metric-subtext {
+  font-size: 12.5px;
+  color: var(--ink-muted);
+  margin-top: 7px;
+}
+
+/* --------------------------------------------------------------------------
+   Panels
+   -------------------------------------------------------------------------- */
+
+.dashboard-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(490px, 1fr));
+  gap: 26px;
+  margin-bottom: 26px;
+  align-items: start;
+}
+
+.panel {
+  background: var(--surface);
+  border: 1px solid var(--rule);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.panel-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 16px 20px 14px;
+  border-bottom: 1px solid var(--rule);
+  background: var(--surface);
+}
+
+.panel-title {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  font-size: 15.5px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+.panel-title svg { flex-shrink: 0; }
+
+.panel-subtitle {
+  font-size: 12.5px;
+  color: var(--ink-muted);
+  margin-top: 3px;
+  max-width: 62ch;
+}
+
+/* --------------------------------------------------------------------------
+   Register tables
+   -------------------------------------------------------------------------- */
+
+.table-wrapper { overflow-x: auto; }
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+}
+
+#table-history { min-width: 460px; }
+#table-events  { min-width: 0; }
+
+/* Keep the event description on one line where it fits; it is the column
+   that carries the detail a reader is scanning for. */
+#tbody-events td:nth-child(3) { min-width: 118px; }
+#tbody-events td:nth-child(5) { font-size: 12.5px; line-height: 1.5; }
+#tbody-events td:nth-child(5) { color: var(--ink-secondary); }
+
+thead th {
+  text-align: left;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-secondary);
+  background: var(--surface-sunken);
+  padding: 9px 14px;
+  border-bottom: 1px solid var(--rule-strong);
+  white-space: nowrap;
+}
+
+tbody td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--rule);
+  color: var(--ink);
+  vertical-align: top;
+}
+
+tbody tr:last-child td { border-bottom: none; }
+tbody tr:hover { background: #fcfbf8; }
+
+/* Run identifiers, timestamps, durations and metrics are machine data, so
+   they are set in the monospaced face with tabular figures. */
+tbody td code,
+#tbody-history td:nth-child(1),
+#tbody-history td:nth-child(2),
+#tbody-history td:nth-child(4),
+#tbody-history td:nth-child(5),
+#tbody-events td:nth-child(1),
+#tbody-models td:nth-child(2),
+#tbody-models td:nth-child(3),
+#tbody-models td:nth-child(4) {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 12.5px;
+  font-variant-numeric: tabular-nums;
+  color: var(--ink-secondary);
+}
+
+#tbody-history td:nth-child(1) { color: var(--ink-muted); font-size: 11.5px; }
+
+tbody td code {
+  background: var(--surface-sunken);
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+  padding: 2px 6px;
+  color: var(--ink);
+}
+
+.badge-status {
+  display: inline-block;
+  font-size: 11.5px;
+  font-weight: 600;
+  padding: 3px 9px;
+  border-radius: 2px;
+  white-space: nowrap;
+}
+
+.badge-success { background: var(--positive-wash); color: var(--positive); }
+.badge-running { background: var(--pending-wash);  color: var(--pending); }
+.badge-failed  { background: var(--negative-wash); color: var(--negative); }
+
+/* --------------------------------------------------------------------------
+   Chart tabs
+   -------------------------------------------------------------------------- */
+
+.tabs {
+  display: flex;
+  border-bottom: 1px solid var(--rule);
+  background: var(--surface-sunken);
+  overflow-x: auto;
+}
+
+.tab-btn {
+  font-family: inherit;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-secondary);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 11px 16px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.12s ease;
+}
+
+.tab-btn:hover { color: var(--ink); }
+
+.tab-btn.active {
+  color: var(--primary);
+  border-bottom-color: var(--primary);
+  background: var(--surface);
+}
+
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+.chart-container { padding: 18px; background: var(--surface); }
+
+.chart-container img {
+  width: 100%;
+  height: auto;
+  display: block;
+  border: 1px solid var(--rule);
+  border-radius: 2px;
+}
+
+/* --------------------------------------------------------------------------
+   Inference form
+   -------------------------------------------------------------------------- */
+
+#form-predict { padding: 18px 20px 4px; }
+
+.form-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(145px, 1fr));
+  gap: 13px;
+}
+
+.form-group { display: flex; flex-direction: column; gap: 5px; }
+
+.form-group label {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--ink-secondary);
+}
+
+.form-control {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 13.5px;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--rule-strong);
+  border-radius: 2px;
+  padding: 8px 10px;
+  width: 100%;
+  transition: border-color 0.12s ease;
+}
+
+.form-control:hover { border-color: var(--ink-muted); }
+.form-control:focus {
+  border-color: var(--primary);
+  outline: none;
+  box-shadow: 0 0 0 3px var(--primary-wash);
+}
+
+.pred-result {
+  margin: 18px 20px 20px;
+  padding: 18px;
+  background: var(--surface-sunken);
+  border: 1px solid var(--rule);
+  border-left: 3px solid var(--primary);
+  border-radius: 2px;
+}
+
+.pred-label {
+  font-size: 12.5px;
+  font-weight: 500;
+  color: var(--ink-secondary);
+}
+
+.pred-price {
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 36px;
+  font-weight: 500;
+  letter-spacing: -0.025em;
+  color: var(--primary);
+  font-variant-numeric: tabular-nums;
+  margin: 4px 0 2px;
+}
+
+.pred-model { font-size: 12.5px; color: var(--ink-muted); }
+
+/* Supporting note block inside the benchmark panel */
+.note-block {
+  padding: 14px 20px 18px;
+  font-size: 12.5px;
+  line-height: 1.75;
+  color: var(--ink-secondary);
+  background: var(--surface-sunken);
+  border-top: 1px solid var(--rule);
+}
+.note-block strong { color: var(--ink); font-weight: 600; }
+
+/* --------------------------------------------------------------------------
+   Footer
+   -------------------------------------------------------------------------- */
+
+footer {
+  margin-top: 34px;
+  padding-top: 18px;
+  border-top: 1px solid var(--rule-strong);
+  font-size: 12.5px;
+  color: var(--ink-muted);
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+/* --------------------------------------------------------------------------
+   Responsive
+   -------------------------------------------------------------------------- */
+
+@media (max-width: 1080px) {
+  .metrics-grid { grid-template-columns: repeat(2, 1fr); }
+  .metric-card { border-bottom: 1px solid var(--rule); }
+  .metric-card:nth-child(2) { grid-column: span 2; }
+  .metric-card:nth-child(2) .metric-value { font-size: 52px; }
+}
+
+@media (max-width: 620px) {
+  .container { padding: 0 16px; }
+  header { padding-top: 24px; }
+  header h1 { font-size: 22px; }
+  .metrics-grid { grid-template-columns: 1fr; }
+  .metric-card:nth-child(2) { grid-column: span 1; }
+  .metric-card:nth-child(2) .metric-value { font-size: 46px; }
+  .dashboard-row { grid-template-columns: 1fr; gap: 18px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { transition: none !important; animation: none !important; }
+}
+
+@media print {
+  body { background: #fff; }
+  .header-actions, .btn { display: none; }
+  .panel { break-inside: avoid; }
+}

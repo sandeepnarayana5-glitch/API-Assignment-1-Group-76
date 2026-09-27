@@ -1,0 +1,40 @@
+{
+  "baseline_model": {
+    "name": "Linear Regression",
+    "mae": 148644.16,
+    "mse": 46001586088.47,
+    "rmse": 214479.8,
+    "r2": 0.5139
+  },
+  "improved_model": {
+    "name": "Random Forest Regressor",
+    "mae": 143857.33,
+    "mse": 44348789400.72,
+    "rmse": 210591.52,
+    "r2": 0.5314
+  },
+  "selected_model": "Random Forest Regressor",
+  "selection_criterion": "Highest R2 on the held-out 20% test split",
+  "target_preparation": "price>0 filter and top-0.5% outlier removal applied in preprocessing",
+  "selected_metrics": {
+    "mae": 143857.33,
+    "rmse": 210591.52,
+    "r2": 0.5314
+  },
+  "features_used": [
+    "bedrooms",
+    "bathrooms",
+    "sqft_living",
+    "sqft_lot",
+    "floors",
+    "waterfront",
+    "view",
+    "condition",
+    "sqft_above",
+    "sqft_basement",
+    "property_age"
+  ],
+  "train_samples": 3624,
+  "test_samples": 906,
+  "evaluation_timestamp": "2026-09-13 14:06:48Z"
+}

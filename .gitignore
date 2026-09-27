@@ -1,0 +1,25 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+
+# Environment
+.env
+
+# Data & Logs & DBs (keep data/raw/data.csv tracked or optional, ignore large temporary outputs)
+logs/*.log
+logs/*.db
+*.sqlite3
+models/*.joblib
+models/*.pkl
+reports/eda_charts/*.png
+
+# IDEs
+.vscode/
+.idea/
+.DS_Store

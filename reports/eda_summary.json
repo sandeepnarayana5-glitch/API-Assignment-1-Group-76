@@ -1,0 +1,177 @@
+{
+  "correlation_summary": {
+    "top_positive_correlations": [
+      {
+        "feature": "sqft_living",
+        "correlation": 0.678
+      },
+      {
+        "feature": "sqft_above",
+        "correlation": 0.585
+      },
+      {
+        "feature": "bathrooms",
+        "correlation": 0.517
+      },
+      {
+        "feature": "view",
+        "correlation": 0.368
+      },
+      {
+        "feature": "bedrooms",
+        "correlation": 0.34
+      }
+    ],
+    "top_negative_correlations": [
+      {
+        "feature": "property_age",
+        "correlation": -0.028
+      }
+    ]
+  },
+  "binning_summary": {
+    "living_space_distribution": {
+      "Medium (1500-2500)": 2001,
+      "Small (<1500 sqft)": 1248,
+      "Large (2500-3500)": 939,
+      "Luxury (>3500)": 342
+    },
+    "property_age_distribution": {
+      "Mature (40-70 yrs)": 1346,
+      "Modern (15-40 yrs)": 1283,
+      "New (<15 yrs)": 1048,
+      "Historic (>70 yrs)": 853
+    },
+    "bedroom_distribution": {
+      "3-4 Beds": 3525,
+      "1-2 Beds": 600,
+      "5+ Beds": 405
+    }
+  },
+  "encoding_summary": {
+    "one_hot_condition": {
+      "technique": "One-Hot Encoding (pandas.get_dummies)",
+      "source_column": "condition",
+      "columns_created": [
+        "condition_1",
+        "condition_2",
+        "condition_3",
+        "condition_4",
+        "condition_5"
+      ],
+      "new_column_count": 5
+    },
+    "label_living_space_bin": {
+      "technique": "Ordinal / Label Encoding (category codes)",
+      "source_column": "living_space_bin",
+      "mapping": {
+        "Small (<1500 sqft)": 0,
+        "Medium (1500-2500)": 1,
+        "Large (2500-3500)": 2,
+        "Luxury (>3500)": 3
+      }
+    },
+    "frequency_city": {
+      "technique": "Frequency Encoding (normalised value counts)",
+      "source_column": "city",
+      "distinct_categories": 44,
+      "rationale": "High cardinality - one-hot would add ~44 sparse columns",
+      "sample_mapping": {
+        "Seattle": 0.34283,
+        "Renton": 0.06424,
+        "Bellevue": 0.06137,
+        "Redmond": 0.05188,
+        "Issaquah": 0.04106
+      }
+    },
+    "binary_waterfront": {
+      "technique": "Binary Encoding (0 = no waterfront, 1 = waterfront)",
+      "source_column": "waterfront",
+      "distribution": {
+        "0": 4505,
+        "1": 25
+      }
+    }
+  },
+  "top_expensive_cities": [
+    {
+      "city": "Medina",
+      "count": 7,
+      "median_price": 1800000.0
+    },
+    {
+      "city": "Yarrow Point",
+      "count": 4,
+      "median_price": 1397000.0
+    },
+    {
+      "city": "Clyde Hill",
+      "count": 8,
+      "median_price": 1312500.0
+    },
+    {
+      "city": "Mercer Island",
+      "count": 80,
+      "median_price": 950050.0
+    },
+    {
+      "city": "Beaux Arts Village",
+      "count": 1,
+      "median_price": 745000.0
+    }
+  ],
+  "feature_importance_ranking": [
+    {
+      "feature": "sqft_living",
+      "importance": 0.6039
+    },
+    {
+      "feature": "property_age",
+      "importance": 0.1054
+    },
+    {
+      "feature": "sqft_lot",
+      "importance": 0.0821
+    },
+    {
+      "feature": "sqft_above",
+      "importance": 0.052
+    },
+    {
+      "feature": "view",
+      "importance": 0.0443
+    },
+    {
+      "feature": "bathrooms",
+      "importance": 0.0378
+    },
+    {
+      "feature": "sqft_basement",
+      "importance": 0.0212
+    },
+    {
+      "feature": "bedrooms",
+      "importance": 0.0198
+    },
+    {
+      "feature": "condition",
+      "importance": 0.0146
+    },
+    {
+      "feature": "floors",
+      "importance": 0.0136
+    },
+    {
+      "feature": "waterfront",
+      "importance": 0.0052
+    }
+  ],
+  "charts_generated": {
+    "price_distribution": "/reports/eda_charts/price_distribution.png",
+    "sqft_vs_price": "/reports/eda_charts/sqft_vs_price.png",
+    "correlation_heatmap": "/reports/eda_charts/correlation_heatmap.png",
+    "feature_importance": "/reports/eda_charts/feature_importance.png"
+  },
+  "duration_seconds": 1.513,
+  "status": "SUCCESS"
+}

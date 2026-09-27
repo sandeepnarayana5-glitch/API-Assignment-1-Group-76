@@ -1,0 +1,659 @@
+{
+  "info": {
+    "name": "House Price Prediction DataOps & REST APIs (Group 76)",
+    "_postman_id": "b3e94471-a477-4b71-85e6-c1da4b726001",
+    "description": "Postman Collection for M-Tech API Driven Assignment 1 (Group 76). Covers all Part B required REST API endpoints, automated pipeline triggers, and ML inference.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "1. Health Check",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/health",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "health"
+          ]
+        },
+        "description": "Probes application availability and returns HEALTHY status."
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Response is valid JSON\", function () {",
+              "    pm.response.to.be.json;",
+              "});",
+              "",
+              "pm.test(\"Response time is under 5000ms\", function () {",
+              "    pm.expect(pm.response.responseTime).to.be.below(5000);",
+              "});",
+              "",
+              "pm.test(\"Content-Type header is application/json\", function () {",
+              "    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+              "});",
+              "",
+              "pm.test(\"Schema contains required fields\", function () {",
+              "    var body = pm.response.json();",
+              "    pm.expect(body).to.have.property(\"status\");",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "2. Application Information (Detail 1)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/application",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "application"
+          ]
+        },
+        "description": "Retrieves core application details, version, environment, and tech stack (Assignment Part B - Detail 1)."
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Response is valid JSON\", function () {",
+              "    pm.response.to.be.json;",
+              "});",
+              "",
+              "pm.test(\"Response time is under 5000ms\", function () {",
+              "    pm.expect(pm.response.responseTime).to.be.below(5000);",
+              "});",
+              "",
+              "pm.test(\"Content-Type header is application/json\", function () {",
+              "    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+              "});",
+              "",
+              "pm.test(\"Schema contains required fields\", function () {",
+              "    var body = pm.response.json();",
+              "    pm.expect(body).to.have.property(\"application_name\");",
+              "    pm.expect(body).to.have.property(\"version\");",
+              "    pm.expect(body).to.have.property(\"tech_stack\");",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "3. Pipeline Status & 2-Min Cadence (Detail 2)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/pipeline/status",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "pipeline",
+            "status"
+          ]
+        },
+        "description": "Retrieves current DataOps pipeline status, execution counts, success rate, and 2-minute scheduler details (Assignment Part B - Detail 2)."
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Response is valid JSON\", function () {",
+              "    pm.response.to.be.json;",
+              "});",
+              "",
+              "pm.test(\"Response time is under 5000ms\", function () {",
+              "    pm.expect(pm.response.responseTime).to.be.below(5000);",
+              "});",
+              "",
+              "pm.test(\"Content-Type header is application/json\", function () {",
+              "    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+              "});",
+              "",
+              "pm.test(\"Schema contains required fields\", function () {",
+              "    var body = pm.response.json();",
+              "    pm.expect(body).to.have.property(\"current_status\");",
+              "    pm.expect(body).to.have.property(\"total_runs\");",
+              "    pm.expect(body).to.have.property(\"scheduler\");",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "4. Execution History Audit Trail (Detail 3)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/pipeline/history?limit=10",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "pipeline",
+            "history"
+          ],
+          "query": [
+            {
+              "key": "limit",
+              "value": "10"
+            }
+          ]
+        },
+        "description": "Retrieves chronological execution audit logs from SQLite with run IDs, timestamps, durations, and record counts (Assignment Part B - Detail 3)."
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Response is valid JSON\", function () {",
+              "    pm.response.to.be.json;",
+              "});",
+              "",
+              "pm.test(\"Response time is under 5000ms\", function () {",
+              "    pm.expect(pm.response.responseTime).to.be.below(5000);",
+              "});",
+              "",
+              "pm.test(\"Content-Type header is application/json\", function () {",
+              "    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+              "});",
+              "",
+              "pm.test(\"Schema contains required fields\", function () {",
+              "    var body = pm.response.json();",
+              "    pm.expect(body).to.have.property(\"history\");",
+              "    pm.expect(body).to.have.property(\"total_returned\");",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "5. Granular Stage Events",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/pipeline/events?limit=20",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "pipeline",
+            "events"
+          ],
+          "query": [
+            {
+              "key": "limit",
+              "value": "20"
+            }
+          ]
+        },
+        "description": "Retrieves granular stage-by-stage events (Ingestion, Preprocessing, EDA, Modeling)."
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Response is valid JSON\", function () {",
+              "    pm.response.to.be.json;",
+              "});",
+              "",
+              "pm.test(\"Response time is under 5000ms\", function () {",
+              "    pm.expect(pm.response.responseTime).to.be.below(5000);",
+              "});",
+              "",
+              "pm.test(\"Content-Type header is application/json\", function () {",
+              "    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+              "});",
+              "",
+              "pm.test(\"Schema contains required fields\", function () {",
+              "    var body = pm.response.json();",
+              "    pm.expect(body).to.have.property(\"events\");",
+              "    pm.expect(body).to.have.property(\"total_returned\");",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "6. Dataset & Preprocessing Summary (Detail 4)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/dataset/summary",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "dataset",
+            "summary"
+          ]
+        },
+        "description": "Retrieves dataset schema, data types, missing value audit, and 8-point summary statistics (Assignment Part B - Detail 4)."
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Response is valid JSON\", function () {",
+              "    pm.response.to.be.json;",
+              "});",
+              "",
+              "pm.test(\"Response time is under 5000ms\", function () {",
+              "    pm.expect(pm.response.responseTime).to.be.below(5000);",
+              "});",
+              "",
+              "pm.test(\"Content-Type header is application/json\", function () {",
+              "    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+              "});",
+              "",
+              "pm.test(\"Schema contains required fields\", function () {",
+              "    var body = pm.response.json();",
+              "    pm.expect(body).to.have.property(\"dataset_name\");",
+              "    pm.expect(body).to.have.property(\"summary_statistics\");",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "7. EDA Statistical Summary",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/eda/summary",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "eda",
+            "summary"
+          ]
+        },
+        "description": "Retrieves Pearson correlation matrix summary, continuous feature binning, expensive city rankings, and Random Forest feature importances."
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Response is valid JSON\", function () {",
+              "    pm.response.to.be.json;",
+              "});",
+              "",
+              "pm.test(\"Response time is under 5000ms\", function () {",
+              "    pm.expect(pm.response.responseTime).to.be.below(5000);",
+              "});",
+              "",
+              "pm.test(\"Content-Type header is application/json\", function () {",
+              "    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+              "});",
+              "",
+              "pm.test(\"Schema contains required fields\", function () {",
+              "    var body = pm.response.json();",
+              "    pm.expect(body).to.have.property(\"correlation_summary\");",
+              "    pm.expect(body).to.have.property(\"binning_summary\");",
+              "    pm.expect(body).to.have.property(\"encoding_summary\");",
+              "    pm.expect(body).to.have.property(\"feature_importance_ranking\");",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "8. Model Metrics & Comparison",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/model/metrics",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "model",
+            "metrics"
+          ]
+        },
+        "description": "Retrieves evaluation benchmarks (MAE, RMSE, R\u00b2) comparing Baseline (Linear Regression) vs Improved (Random Forest) models."
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Response is valid JSON\", function () {",
+              "    pm.response.to.be.json;",
+              "});",
+              "",
+              "pm.test(\"Response time is under 5000ms\", function () {",
+              "    pm.expect(pm.response.responseTime).to.be.below(5000);",
+              "});",
+              "",
+              "pm.test(\"Content-Type header is application/json\", function () {",
+              "    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+              "});",
+              "",
+              "pm.test(\"Schema contains required fields\", function () {",
+              "    var body = pm.response.json();",
+              "    pm.expect(body).to.have.property(\"baseline_model\");",
+              "    pm.expect(body).to.have.property(\"improved_model\");",
+              "    pm.expect(body).to.have.property(\"selected_model\");",
+              "    pm.expect(body).to.have.property(\"selected_metrics\");",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "9. Trigger Pipeline Manually",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/pipeline/trigger",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "pipeline",
+            "trigger"
+          ]
+        },
+        "description": "Triggers an immediate asynchronous execution of the end-to-end DataOps pipeline (returns 202 Accepted)."
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 202\", function () {",
+              "    pm.response.to.have.status(202);",
+              "});",
+              "",
+              "pm.test(\"Response is valid JSON\", function () {",
+              "    pm.response.to.be.json;",
+              "});",
+              "",
+              "pm.test(\"Response time is under 5000ms\", function () {",
+              "    pm.expect(pm.response.responseTime).to.be.below(5000);",
+              "});",
+              "",
+              "pm.test(\"Content-Type header is application/json\", function () {",
+              "    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+              "});",
+              "",
+              "pm.test(\"Schema contains required fields\", function () {",
+              "    var body = pm.response.json();",
+              "    pm.expect(body).to.have.property(\"status\");",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "10. Real-time House Price Prediction",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"bedrooms\": 3.0,\n  \"bathrooms\": 2.25,\n  \"sqft_living\": 2150.0,\n  \"sqft_lot\": 7200.0,\n  \"floors\": 1.5,\n  \"waterfront\": 0,\n  \"view\": 1,\n  \"condition\": 4,\n  \"sqft_above\": 1827.0,\n  \"sqft_basement\": 323.0,\n  \"property_age\": 35.0\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/predict",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "predict"
+          ]
+        },
+        "description": "Predicts house price given property structural and geographical features using the trained model."
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Response is valid JSON\", function () {",
+              "    pm.response.to.be.json;",
+              "});",
+              "",
+              "pm.test(\"Response time is under 5000ms\", function () {",
+              "    pm.expect(pm.response.responseTime).to.be.below(5000);",
+              "});",
+              "",
+              "pm.test(\"Content-Type header is application/json\", function () {",
+              "    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+              "});",
+              "",
+              "pm.test(\"Schema contains required fields\", function () {",
+              "    var body = pm.response.json();",
+              "    pm.expect(body).to.have.property(\"predicted_price\");",
+              "    pm.expect(body).to.have.property(\"currency\");",
+              "    pm.expect(body).to.have.property(\"model_used\");",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "11. Prediction - Negative Validation (422 Expected)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"bedrooms\": -5.0,\n  \"sqft_living\": 2000.0\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/api/predict",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "predict"
+          ]
+        },
+        "description": "Validates API error handling for negative/invalid inputs, returning 422 Unprocessable Entity."
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 422\", function () {",
+              "    pm.response.to.have.status(422);",
+              "});",
+              "",
+              "pm.test(\"Response is valid JSON\", function () {",
+              "    pm.response.to.be.json;",
+              "});",
+              "",
+              "pm.test(\"Response time is under 5000ms\", function () {",
+              "    pm.expect(pm.response.responseTime).to.be.below(5000);",
+              "});",
+              "",
+              "pm.test(\"Content-Type header is application/json\", function () {",
+              "    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+              "});",
+              "",
+              "pm.test(\"Schema contains required fields\", function () {",
+              "    var body = pm.response.json();",
+              "    pm.expect(body).to.have.property(\"detail\");",
+              "});"
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "name": "10. Cloud Deployment Details (AWS Built-in APIs)",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{base_url}}/api/cloud/deployment",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "api",
+            "cloud",
+            "deployment"
+          ]
+        },
+        "description": "Retrieves live AWS infrastructure details via boto3 calls to EC2 DescribeInstances, API Gateway GetApis, CloudWatch Logs DescribeLogStreams and Cost Explorer GetCostAndUsage."
+      },
+      "response": [],
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Status code is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(\"Response is valid JSON\", function () {",
+              "    pm.response.to.be.json;",
+              "});",
+              "",
+              "pm.test(\"Response time is under 5000ms\", function () {",
+              "    pm.expect(pm.response.responseTime).to.be.below(5000);",
+              "});",
+              "",
+              "pm.test(\"Content-Type header is application/json\", function () {",
+              "    pm.expect(pm.response.headers.get(\"Content-Type\")).to.include(\"application/json\");",
+              "});",
+              "",
+              "pm.test(\"Schema contains required fields\", function () {",
+              "    var body = pm.response.json();",
+              "    pm.expect(body).to.have.property(\"200\");",
+              "    pm.expect(body).to.have.property(\"['aws_region', 'compute_instance', 'cloudwatch_logging']\");",
+              "});"
+            ]
+          }
+        }
+      ]
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "http://127.0.0.1:8000",
+      "type": "string"
+    }
+  ]
+}
